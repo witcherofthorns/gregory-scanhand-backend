@@ -46,13 +46,11 @@ const userSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
-// TTL индекс - удаляем через 90 дней неактивности
 userSchema.index(
     { lastSeenAt: 1 },
     { expireAfterSeconds: 90 * 24 * 60 * 60 }
 );
 
-// Статический метод для хеширования фигерпринта
 userSchema.statics.hashFingerprint = function (fingerprint) {
     const salt = 'scanhand1775749854';
     return crypto

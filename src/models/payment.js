@@ -27,5 +27,11 @@ const paymentSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
+// 90 days
+paymentSchema.index(
+    { createdAt: 1 },
+    { expireAfterSeconds: 90 * 24 * 60 * 60 }
+);
+
 const Payment = mongoose.model('Payment', paymentSchema, 'payments');
 export default Payment;
