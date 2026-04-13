@@ -21,13 +21,13 @@ router.post('/request', authorizationUser, uploadMiddleware, async (req, res) =>
     try {
         const user = req.user;
         const theme = req.body.theme;
-        const leftHand = req.files['left'][0];
-        const rightHand = req.files['right'][0];
+        const leftHand = req.files['left'] ? req.files['left'][0] : null;
+        const rightHand = req.files['right'] ? req.files['right'][0] : null;
 
         // no credist
         if(user.balance <= 0){
-            return res.status(204).json({
-                error: 'no credits'
+            return res.status(200).json({
+                status: 'no credits'
             });
         }
 
