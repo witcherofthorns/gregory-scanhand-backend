@@ -3,27 +3,23 @@ import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
-    // Внутренний ID для фронта
     userId: {
         type: String,
         required: true,
         unique: true,
         default: () => uuidv4()
     },
-    // Хеш фигерпринта с солью
     hash: {
         type: String,
         required: true,
         unique: true,
         index: true
     },
-    // Баланс в "кредах" (количество оплаченных предсказаний)
     balance: {
         type: Number,
         default: 0,
         min: 0
     },
-    // Информация об устройстве
     device: {
         agent: String,
         platform: String,
@@ -31,7 +27,6 @@ const userSchema = new mongoose.Schema({
         screen: String,
         timezone: String
     },
-    // Статистика
     firstSeenAt: {
         type: Date,
         default: Date.now

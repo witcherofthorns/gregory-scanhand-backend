@@ -5,6 +5,8 @@ import routeAuth from './routes/auth.js'
 import routeUser from './routes/user.js'
 import routePayment from './routes/payment.js'
 import routeRequest from './routes/request.js'
+import { S3Connect } from './services/s3.js'
+import { workerStart, workerStop } from './workers/task.js'
 
 const CORS_FRONTEND = process.env.SCANHAND_CORS || 'http://localhost:3000'
 
@@ -28,14 +30,22 @@ async function mongodbConnect(uri, user, pass) {
     console.log('app: mongodb connected');
 }
 
+await S3Connect(
+    process.env.SCANHAND_S3_ACCESS_KEY,
+    process.env.SCANHAND_S3_SECRET_KEY
+)
+
 await mongodbConnect(
     `${process.env.SCANHAND_MONGODB_URI}/scanhand`,
     process.env.SCANHAND_MONGODB_USER,
     process.env.SCANHAND_MONGODB_PASS
 )
 
+await workerStart()
+
 function shutdown(){
     mongoose.connection.close();
+    workerStop();
     console.log('exit...')
     server.close(() => {
         console.log('server HTTP closed...')
