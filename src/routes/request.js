@@ -37,7 +37,7 @@ router.get('/request', authorizationUser, async (req, res) => {
         return res.status(200).json({
             id: null,
             status: 'processing',
-            theme: result.theme,
+            theme: '',
             result: null
         });
     }

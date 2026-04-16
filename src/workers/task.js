@@ -45,6 +45,14 @@ async function taskProcess(task){
             task.theme
         );
 
+        // no openai result
+        // error or failed result
+        if(!result){
+            console.log('worker: open ai bad request, delete task')
+            await task.deleteOne();
+            return;
+        }
+
         // if ai response success
         // sub user balance credit
         if(result.status === 'ok'){
