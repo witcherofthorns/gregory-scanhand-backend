@@ -38,6 +38,7 @@ router.get('/request', authorizationUser, async (req, res) => {
             id: null,
             status: 'processing',
             theme: '',
+            task: null,
             result: null
         });
     }
@@ -47,6 +48,7 @@ router.get('/request', authorizationUser, async (req, res) => {
         id: result._id,
         status: 'completed',
         theme: result.theme,
+        task: result.task,
         result: result.result
     });
 });

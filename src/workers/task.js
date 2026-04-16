@@ -65,6 +65,7 @@ async function taskProcess(task){
         await Request.create({
             userId: task.userId,
             theme: task.theme,
+            task: task._id,
             result: result
         });
 

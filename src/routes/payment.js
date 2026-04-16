@@ -44,7 +44,7 @@ router.get('/payment/status/:paymentId', authorizationUser, async (req, res) => 
             // if success payment status
             // add user balance
             if(payment.status == 'succeeded'){
-                user.balance += 1;
+                user.balance += payment.amount;
                 await user.save();
             }
         }
@@ -84,8 +84,20 @@ router.get('/payment/waits', authorizationUser, async (req, res) => {
 
 router.post('/payment', authorizationUser, async (req, res) => {
     try {
-        const amount = 150;
+        const amount = parseInt(req.query.amount) | null;
         const user = req.user;
+
+        // check amount query exist
+        if(!amount){
+            console.error('payment: amount not found query')
+            return res.sendStatus(400);
+        }
+
+        // validate amount values
+        if(amount != 50 && amount != 100 && amount != 200){
+            console.error('payment: bad amount -> ', amount)
+            return res.sendStatus(400);
+        }
 
         // create yookassa payment transaction
         const paymentYoo = await createPayment({
@@ -110,7 +122,7 @@ router.post('/payment', authorizationUser, async (req, res) => {
         // if payment already successed
         // update user balance
         if(paymentYoo.status == 'succeeded'){
-            user.balacne += 1;
+            user.balacne += amount;
             await user.save();
         }
 
