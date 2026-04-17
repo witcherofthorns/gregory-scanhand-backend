@@ -59,7 +59,8 @@ router.post('/request', authorizationUser, async (req, res) => {
         const user = req.user;
         
         // check user credist
-        if(user.balance <= 0){
+        // fixed amount value - 50 credits
+        if((user.balance - 50) < 0){
             return res.status(200).json({
                 status: 'no credits'
             });

@@ -55,9 +55,10 @@ async function taskProcess(task){
 
         // if ai response success
         // sub user balance credit
+        // fixed $inc amout - 50 credits
         if(result.status === 'ok'){
             await User.findOneAndUpdate({ userId: task.userId}, {
-                $inc: { balance: -1 }
+                $inc: { balance: -50 }
             });
         }
 
